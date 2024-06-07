@@ -55,6 +55,10 @@ Para concluir algunos posibles escenarios posibles que se pueden dar en el proye
 ##### Observaciones
 Este es el formato corregido ya que no sabia que llebaba este formato y lo estaba haciendo mal ya que yo creaba repositorios por cada avance que teniamos pero ya esta corregido.
 A continuacion dejo los links de los avances:
-**Avance 1:** https://github.com/yamilns/Primer-avance
-**Avance 2:** https://github.com/yamilns/Segundo-Avance
-**Avance 3:** https://github.com/yamilns/Tercer-Avance
+
+**Avance 1:** 
+https://github.com/yamilns/Primer-avance
+**Avance 2:**  
+https://github.com/yamilns/Segundo-Avance
+**Avance 3:** 
+https://github.com/yamilns/Tercer-Avance
