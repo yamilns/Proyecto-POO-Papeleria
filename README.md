@@ -5,6 +5,7 @@ proyecto.
 A continuación desglosare los tipos de clases que utilice:
 ## ¿Como funciona?
 El programa modela una papelería que gestiona un inventario de productos. Utiliza una estructura de clases en C++ para representar distintos tipos de productos y la papelería que los contiene. 
+
 **1. Creación de la Papelería:**
 Se crea una instancia de la clase Papeleria llamada "_miPapeleria_", que almacena información sobre la papelería, como su nombre, número de teléfono y ubicación.
 
