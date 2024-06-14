@@ -47,7 +47,7 @@ void Inventario::agregarProducto(Producto* producto) {
 void Inventario::eliminarProducto(int id) {
     for (int i = 0; i < count; ++i) {
         if (productos[i]->getId() == id) {
-            delete productos[i];  // Liberar la memoria del producto eliminado
+            delete productos[i];  
             for (int j = i; j < count - 1; ++j) {
                 productos[j] = productos[j + 1];
             }
