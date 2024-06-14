@@ -3,113 +3,166 @@
 
 #include <iostream>
 #include <string>
-#include "producto.h"  // Necesito incluir esto porque usaré la clase Producto en Inventario
+#include "producto.h"  
 using namespace std;
 
 // Clase Inventario
 class Inventario {
 private:
-    Producto* productos[100]; // Utilizo un arreglo de punteros a Producto para almacenar hasta 100 productos
-    int count; // Lleva la cuenta del número de productos en el inventario
+    Producto* productos[100]; 
+    int count; 
 
 public:
     // Constructor
-    // Inicializo el inventario con count a 0, indicando que está vacío al principio
+    
     Inventario() : count(0) {}
+     ~Inventario() {
+        for (int i = 0; i < count; ++i) {
+            delete productos[i];  
+        }
+    }
 
     // Métodos
 
-    // Método para agregar un producto al inventario
     void agregarProducto(Producto* producto);
 
-    // Método para eliminar un producto del inventario por ID
     void eliminarProducto(int id);
 
-    // Método para mostrar todos los productos en el inventario
     void mostrarInventario(void);
 };
 
-// Defino las funciones miembro de Inventario
 
-// Método para agregar un producto
-// Verifico si hay espacio en el arreglo y, si lo hay, agrego el producto y aumento el contador
+
 void Inventario::agregarProducto(Producto* producto) {
     if (count < 100) {
         productos[count++] = producto;
+        cout << "Producto agregado" << endl;
+        producto->mostrarInformacion();
     } else {
-        cout << "Inventario lleno" << endl; // Informo que el inventario está lleno
+        cout << "Inventario lleno" << endl; 
     }
 }
 
-// Método para eliminar un producto por ID
-// Busco el producto por su ID, y si lo encuentro, muevo todos los productos subsiguientes una posición hacia atrás
+
 void Inventario::eliminarProducto(int id) {
     for (int i = 0; i < count; ++i) {
-        if (productos[i]->getId() == id) { // Encuentro el producto por ID
-            for (int j = i; j < count - 1; ++j) { // Muevo los productos subsiguientes hacia atrás
+        if (productos[i]->getId() == id) {
+            delete productos[i];  // Liberar la memoria del producto eliminado
+            for (int j = i; j < count - 1; ++j) {
                 productos[j] = productos[j + 1];
             }
-            --count; // Reduzco el contador del inventario
-            break;
+            productos[count - 1] = nullptr;  // Asegurarse de que el último lugar esté vacío
+            --count;
+            cout << "Producto con ID " << id << " eliminado del inventario." << endl;
+            return;
         }
     }
+    cout << "Producto con ID " << id << " no encontrado en el inventario." << endl;
 }
 
-// Método para mostrar todos los productos en el inventario
-// Recorro el arreglo de productos y llamo al método mostrarInformacion() de cada producto
+
 void Inventario::mostrarInventario(void) {
-    for (int i = 0; i < count; ++i) {
-        productos[i]->mostrarInformacion();  // Uso -> para acceder al método del objeto al que apunta el puntero
+    if (count == 0) {
+        cout << "El inventario está vacio." << endl;
+    } else {
+        for (int i = 0; i < count; ++i) {
+            productos[i]->mostrarInformacion();
+        }
     }
 }
 
 // Clase Papeleria
 class Papeleria {
 private:
-    string nombre; // Nombre de la papelería
-    int telefono; // Teléfono de contacto de la papelería
-    string ubicacion; // Dirección de la papelería
-    Inventario inventario;  // El inventario de la papelería
+    string nombre; 
+    int telefono; 
+    string ubicacion; 
+    Inventario inventario; 
 
 public:
     // Constructores
-    // Constructor por defecto que inicializa los atributos con valores vacíos o cero
+   
     Papeleria() : nombre(""), telefono(0), ubicacion("") {}
     
-    // Constructor que inicializa la papelería con nombre, teléfono y ubicación específicos
     Papeleria(string nombre, int telefono, string ubicacion)
     : nombre(nombre), telefono(telefono), ubicacion(ubicacion) {}
 
     // Getters
-    // Obtengo el nombre de la papelería
+
     string getNombre() { return nombre; }
     
-    // Obtengo el teléfono de la papelería
     int getTelefono() { return telefono; }
     
-    // Obtengo la ubicación de la papelería
     string getUbicacion() { return ubicacion; }
 
     // Setters
-    // Establezco el nombre de la papelería
+
     void setNombre(string nom) { nombre = nom; }
-    
-    // Establezco el teléfono de la papelería
+
     void setTelefono(int telef) { telefono = telef; }
     
-    // Establezco la ubicación de la papelería
     void setUbicacion(string ubi) { ubicacion = ubi; }
 
     // Métodos
-    // Método para mostrar el inventario de la papelería
-    // Llama al método mostrarInventario() del objeto inventario
+    void crearInventario();
     void mostrarInventario() {
         inventario.mostrarInventario();
     }
 
-    // Método para obtener una referencia al inventario
-    // Esto me permite acceder al inventario desde fuera de la clase Papeleria
     Inventario& getInventario() { return inventario; }
 };
 
-#endif 
+void Papeleria::crearInventario() {
+    int numProductos;
+    cout << "¿Cuantos productos diferentes quieres agregar?: ";
+    cin >> numProductos;
+    cin.ignore();  // Ignorar el carácter de nueva línea residual
+
+    for (int i = 0; i < numProductos; ++i) {
+        int id;
+        float precio;
+        string categoria, marca, tipo;
+
+        cout << "Producto " << i + 1 << ":" << endl;
+
+        cout << "ID: ";
+        cin >> id;
+        cin.ignore();  // Ignorar el carácter de nueva línea
+
+        cout << "Categoria (Pluma/Libreta): ";
+        getline(cin, categoria);
+
+        cout << "Precio: ";
+        cin >> precio;
+        cin.ignore();
+
+        cout << "Marca (BIC/Scribe): ";
+        getline(cin, marca);
+
+        if (categoria == "Pluma") {
+            string color;
+            cout << "Color: ";
+            getline(cin, color);
+
+            cout << "Tipo de punta (Fina/Gruesa): ";
+            getline(cin, tipo);
+
+            getInventario().agregarProducto(new Pluma(precio, id, categoria, marca, color, tipo));
+        } else if (categoria == "Libreta") {
+            int num_hojas;
+            cout << "Tipo de cuaderno (Cuadro grande/Cuadro chico/Raya): ";
+            getline(cin, tipo);
+
+            cout << "Numero de hojas: ";
+            cin >> num_hojas;
+            cin.ignore();
+
+            getInventario().agregarProducto(new Libreta(precio, id, categoria, marca, num_hojas, tipo));
+        } else {
+            cout << "Categoria no valida. El producto no se agregara." << endl;
+        }
+    }
+    cout << "Inventario actualizado." << endl;
+}
+
+#endif
